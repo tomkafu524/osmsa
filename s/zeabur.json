@@ -1,0 +1,23 @@
+{
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "command": "npm install"
+  },
+  "deploy": {
+    "resources": {
+      "cpu": 0.5,
+      "memory": 512
+    },
+    "commands": {
+      "start": "npm start"
+    }
+  },
+  "addons": [
+    {
+      "service": "mysql",
+      "plan": "free"
+    }
+  ]
+}
