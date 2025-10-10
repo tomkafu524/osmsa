@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仪表盘 - 高价值系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        dark: '#1D2939',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gray-50 min-h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm fixed top-0 left-0 right-0 z-30">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- 左侧Logo -->
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <i class="fa fa-diamond text-primary text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-dark">万亿价值系统</span>
+                    </a>
+                </div>
+                
+                <!-- 右侧用户菜单 -->
+                <div class="flex items-center space-x-4">
+                    <button id="notificationBtn" class="p-2 rounded-full text-gray-500 hover:text-primary hover:bg-gray-100 transition-custom relative">
+                        <i class="fa fa-bell text-lg"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                    
+                    <div class="relative" id="userMenu">
+                        <button class="flex items-center space-x-2 focus:outline-none">
+                            <img src="https://picsum.photos/id/1005/40/40" alt="用户头像" class="w-8 h-8 rounded-full object-cover border-2 border-gray-200">
+                            <span class="text-sm font-medium text-gray-700 hidden md:block" id="usernameDisplay">加载中...</span>
+                            <i class="fa fa-chevron-down text-xs text-gray-500"></i>
+                        </button>
+                        
+                        <!-- 下拉菜单 -->
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 hidden z-50" id="userDropdown">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-custom">
+                                <i class="fa fa-user mr-2 text-gray-500"></i>个人资料
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-custom">
+                                <i class="fa fa-cog mr-2 text-gray-500"></i>账户设置
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <a href="#" id="logoutBtn" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition-custom">
+                                <i class="fa fa-sign-out mr-2"></i>退出登录
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <!-- 欢迎信息 -->
+        <div class="mb-8">
+            <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark">欢迎回来，<span id="welcomeUsername">用户</span></h1>
+            <p class="text-gray-500 mt-1">这是您的系统仪表盘，查看您的账户信息和活动</p>
+        </div>
+        
+        <!-- 数据卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm">账户价值</p>
+                        <h3 class="text-2xl font-bold text-dark mt-1">¥100,000,000,000,000,000</h3>
+                        <p class="text-green-500 text-sm mt-2 flex items-center">
+                            <i class="fa fa-arrow-up mr-1"></i> 12.5% <span class="text-gray-400 ml-1">较上月</span>
+                        </p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <i class="fa fa-line-chart text-primary text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm">安全评分</p>
+                        <h3 class="text-2xl font-bold text-dark mt-1">98/100</h3>
+                        <p class="text-green-500 text-sm mt-2 flex items-center">
+                            <i class="fa fa-arrow-up mr-1"></i> 2% <span class="text-gray-400 ml-1">较上周</span>
+                        </p>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg">
+                        <i class="fa fa-shield text-green-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm">登录次数</p>
+                        <h3 class="text-2xl font-bold text-dark mt-1">24 次</h3>
+                        <p class="text-gray-400 text-sm mt-2 flex items-center">
+                            <i class="fa fa-clock-o mr-1"></i> 本月
+                        </p>
+                    </div>
+                    <div class="bg-purple-50 p-3 rounded-lg">
+                        <i class="fa fa-sign-in text-purple-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-xl p-6 card-shadow hover:shadow-lg transition-custom transform hover:-translate-y-1">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-gray-500 text-sm">系统状态</p>
+                        <h3 class="text-2xl font-bold text-dark mt-1">正常</h3>
+                        <p class="text-green-500 text-sm mt-2 flex items-center">
+                            <i class="fa fa-check-circle mr-1"></i> 所有服务运行中
+                        </p>
+                    </div>
+                    <div class="bg-yellow-50 p-3 rounded-lg">
+                        <i class="fa fa-server text-yellow-500 text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 图表和信息区 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- 左侧图表 -->
+            <div class="lg:col-span-2 bg-white rounded-xl p-6 card-shadow">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-lg text-dark">价值趋势分析</h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 text-xs bg-primary/10 text-primary rounded-full">日</button>
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-custom">周</button>
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-custom">月</button>
+                        <button class="px-3 py-1 text-xs bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-custom">年</button>
+                    </div>
+                </div>
+                <div class="h-80">
+                    <canvas id="valueChart"></canvas>
+                </div>
+            </div>
+            
+            <!-- 右侧信息 -->
+            <div class="bg-white rounded-xl p-6 card-shadow">
+                <h3 class="font-bold text-lg text-dark mb-6">账户信息</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="fa fa-user text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">用户名</p>
+                            <p class="font-medium text-dark" id="accountUsername">加载中...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="fa fa-envelope text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">邮箱</p>
+                            <p class="font-medium text-dark" id="accountEmail">加载中...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <i class="fa fa-calendar text-xl"></i>
+                        </div>
+                        <div class="ml-4">
+                            <p class="text-gray-500 text-sm">注册日期</p>
+                            <p class="font-medium text-dark" id="accountJoinDate">计算中...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <button class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 px-4 rounded-lg transition-custom">
+                            <i class="fa fa-edit mr-2"></i>编辑资料
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-200 py-6">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-500 text-sm">© 2023 万亿价值系统. 保留所有权利.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-primary transition-custom">
+                        <i class="fa fa-question-circle"></i> 帮助中心
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-primary transition-custom">
+                        <i class="fa fa-file-text-o"></i> 服务条款
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-primary transition-custom">
+                        <i class="fa fa-shield"></i> 隐私政策
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 通知提示框 -->
+    <div id="notification" class="fixed top-20 right-6 p-4 rounded-lg shadow-lg transform translate-x-full transition-all duration-300 flex items-center max-w-sm z-50"></div>
+
+    <script>
+        // 检查登录状态，如果未登录则跳转至登录页
+        async function checkLoggedIn() {
+            try {
+                const response = await fetch('/api/user');
+                const data = await response.json();
+                
+                if (!data.loggedIn) {
+                    window.location.href = '/login';
+                    return null;
+                }
+                
+                return data.user;
+            } catch (error) {
+                console.error('检查登录状态失败:', error);
+                showNotification('连接服务器失败', 'error');
+                return null;
+            }
+        }
+        
+        // 初始化用户信息
+        async function initUserInfo() {
+            const user = await checkLoggedIn();
+            if (!user) return;
+            
+            // 更新页面上的用户信息
+            document.getElementById('usernameDisplay').textContent = user.username;
+            document.getElementById('welcomeUsername').textContent = user.username;
+            document.getElementById('accountUsername').textContent = user.username;
+            document.getElementById('accountEmail').textContent = user.email;
+            
+            // 计算注册日期（实际应用中应从数据库获取）
+            const today = new Date();
+            const joinDate = new Date(today);
+            joinDate.setMonth(today.getMonth() - 3); // 假设3个月前注册
+            document.getElementById('accountJoinDate').textContent = joinDate.toLocaleDateString('zh-CN');
+            
+            // 初始化图表
+            initChart();
+        }
+        
+        // 初始化价值趋势图表
+        function initChart() {
+            const ctx = document.getElementById('valueChart').getContext('2d');
+            
+            // 生成模拟数据
+            const days = 30;
+            const labels = Array.from({length: days}, (_, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() - (days - i - 1));
+                return date.getDate() + '日';
+            });
+            
+            const baseValue = 100000000000000000; // 100万亿
+            const data = Array.from({length: days}, (_, i) => {
+                // 生成有上升趋势的随机数据
+                const trend = (i / days) * 0.1; // 10%的上升趋势
+                const random = (Math.random() - 0.5) * 0.02; // ±2%的随机波动
+                return baseValue * (1 + trend + random);
+            });
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '账户价值',
+                        data: data,
+                        borderColor: '#165DFF',
+                        backgroundColor: 'rgba(22, 93, 255, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointBackgroundColor: '#165DFF',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return `价值: ¥${context.raw.toLocaleString()}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                borderDash: [2, 4],
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 100000000000000000) {
+                                        return '¥' + (value / 100000000000000000).toFixed(1) + '万亿';
+                                    }
+                                    return '¥' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        }
+        
+        // 退出登录
+        async function logout() {
+            try {
+                const response = await fetch('/api/logout');
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('退出登录成功', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1000);
+                } else {
+                    showNotification('退出登录失败', 'error');
+                }
+            } catch (error) {
+                console.error('退出登录失败:', error);
+                showNotification('退出登录失败，请重试', 'error');
+            }
+        }
+        
+        // 显示通知
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            if (type === 'success') {
+                notification.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                notification.classList.remove('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+            } else {
+                notification.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                notification.classList.remove('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+            }
+            
+            notification.classList.remove('translate-x-full');
+            notification.classList.add('translate-x-0');
+            
+            // 3秒后隐藏通知
+            setTimeout(() => {
+                notification.classList.remove('translate-x-0');
+                notification.classList.add('translate-x-full');
+            }, 3000);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initUserInfo();
+            
+            // 用户菜单下拉
+            const userMenu = document.getElementById('userMenu');
+            const userDropdown = document.getElementById('userDropdown');
+            
+            userMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+                userDropdown.classList.toggle('hidden');
+            });
+            
+            // 点击其他地方关闭下拉菜单
+            document.addEventListener('click', () => {
+                userDropdown.classList.add('hidden');
+            });
+            
+            // 退出登录按钮
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                logout();
+                userDropdown.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
