@@ -1,0 +1,5 @@
+{
+  "php_version": "8.1",
+  "build_command": "composer install --no-dev --optimize-autoloader",
+  "start_command": "php -S 0.0.0.0:$PORT -t public"
+}

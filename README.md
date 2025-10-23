@@ -1,48 +1,36 @@
-# 彩虹自助下单系统
+# Zeabur 部署配置说明
 
-> PHP版本: >= 7.0.1
+## 📦 已配置文件
 
-____
-* 去除所有授权验证
-* 支持自定义说说接口
-* 去除后台广告与更新
-* 可自定义易支付接口
-____
+### 1. `.php-version`
+指定 PHP 运行时版本为 **8.1**
 
->安装教程:   
-> 1、上传源代码到空间或服务器，并确保权限可读写。  
-> 2、上传完成后，使用浏览器访问 域名/install/index.php，按照步骤流程进行安装。  
+### 2. `composer.json`
+- PHP 版本要求: ^7.4|^8.0|^8.1
+- 必需扩展: PDO, JSON, mbstring
+- 平台配置: PHP 8.1
 
->路径地址详情:  
-> admin (管理员后台)  
-> user (分站及用户)  
-> assets (资源文件)  
-> includes (应用程序核心文件)  
-> other (支付目录)  
-> install (程序安装)  
-> template (模板)  
-> config.php (数据库配置文件)  
-> doc.php (对接文档)  
+### 3. `.zbpack.json` (Zeabur 专用)
+- **php_version**: 8.1
+- **build_command**: composer install --no-dev --optimize-autoloader
+- **start_command**: php -S 0.0.0.0:$PORT -t public
 
->Nginx静态规则:
-> rewrite ^/api/(\w+)\.do$ /api.php?act=$1 last;  
+## 🚀 部署步骤
 
-*特别强调*
-> 1、此版本为正式免费版本，其他的均属于二次开发。  
-> 2、在发布前，已和原作者联系并同意此次发布。
+1. 将这些配置文件复制到项目根目录
+2. 确保项目根目录有 `composer.json` 和 `composer.lock`
+3. 在 Zeabur 上连接您的 Git 仓库
+4. Zeabur 会自动检测配置并使用 PHP 8.1 部署
 
-__使用协议__
-* 如果在使用过程中，出现违法违纪的情况下均与本人无关。全由使用者承担。
-* 在使用中出现问题，例如：BUG、数据泄露及丢失、入侵等安全问题，全由使用者承担。
-* 此系统仅供个人学习、研究之用，请勿用于商业用途。
-* 不提供任何技术支持。
-* 在您下载源码后视为您已经了解使用协议并知晓法律协议。
----
+## ⚙️ 自定义配置
 
-[IDC、支付服务商] 
-* 小白云-云服务器 : https://www.xiaobaiyun.cn/
-* 我爱支付，让交易更有价值 : https://www.52zhifu.com/
-  
-----
-> [QQ交流群]  https://jq.qq.com/?_wv=1027&k=FAniMXmE  
-> [接口助手]  https://open-api.qqzwb.com/
+如需修改 PHP 版本，同时修改以下文件：
+- `.php-version`: 改为目标版本号（如 8.2）
+- `composer.json`: 更新 require.php 和 config.platform.php
+- `.zbpack.json`: 更新 php_version
+
+## 📌 注意事项
+
+- 建议使用 PHP 8.1 以获得最佳性能和兼容性
+- 如果项目使用了 public 目录作为入口，start_command 已配置 `-t public`
+- 如果入口目录不同，请修改 `.zbpack.json` 中的 start_command
